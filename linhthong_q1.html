@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Lớp Võ Linh Thông</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        /* Thẻ thông tin tổng quan lớp võ */
+        .class-summary {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-stat-box {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .summary-stat {
+            text-align: center;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .summary-stat .number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1;
+            color: #fff;
+        }
+
+        .summary-stat .label {
+            font-size: 1.05em;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+
+        .summary-notes {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .note-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .note-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .badge-pro {
+            background-color: var(--success-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .badge-con {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        ul.list-detail {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+            font-size: 0.95em;
+        }
+
+        ul.list-detail li {
+            margin-bottom: 5px;
+        }
+
+        /* Lưới hiển thị nhân sự */
+        .personnel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .role-phutrach { background-color: #c0392b; } 
+        .role-dunglop { background-color: #2980b9; } 
+        .role-phuta { background-color: #16a085; } 
+        .role-thuki { background-color: #e67e22; } 
+
+        .person-name {
+            font-size: 1.25em;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+        }
+
+        .person-info {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .person-info strong {
+            color: var(--secondary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            height: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .status-note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #555;
+            border-left: 3px solid var(--warning-color);
+            margin-top: auto;
+        }
+
+        .highlight-text {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .class-summary {
+                flex-direction: column;
+            }
+            .summary-stat-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Quay lại trang Bảng tổng hợp</a>
+
+    <header class="page-header">
+        <h1>BÁO CÁO LỚP VÕ LINH THÔNG</h1>
+    </header>
+
+    <h2 class="section-title">1. Thông tin Lớp Võ</h2>
+    <div class="class-summary">
+        <div class="summary-stat-box">
+            <div class="summary-stat">
+                <p class="number">42</p>
+                <p class="label">Tổng số Võ sinh</p>
+            </div>
+            <div class="summary-stat">
+                <p class="number">70%</p>
+                <p class="label">Hoàn thành CT mới</p>
+            </div>
+        </div>
+        <div class="summary-notes">
+            <div class="note-item">
+                <span class="badge-pro">Thuận lợi</span>
+                <ul class="list-detail">
+                    <li>Vị trí tại trung tâm thành phố Hà Nội, cơ sở vật chất đầy đủ.</li>
+                    <li>Được sự quan tâm ủng hộ của Thầy trụ trì và các phụ huynh.</li>
+                    <li>Là nơi tập trung chính của Võ đường nên đa số các huynh đệ Ban huấn luyện cấp đai cao hay qua lớp hỗ trợ.</li>
+                </ul>
+            </div>
+            <div class="note-item">
+                <span class="badge-con">Khó khăn</span>
+                <ul class="list-detail">
+                    <li>Nhiều huynh đệ trong Ban huấn luyện bận công việc cá nhân và gia đình nên lớp chưa phát huy hết được các điều kiện thuận lợi sẵn có.</li>
+                    <li>Chất lượng tập luyện của các võ sinh chưa thực sự tương đồng.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">2. Tình hình Nhân sự & Ban Huấn Luyện</h2>
+    <div class="personnel-grid">
+        
+        <div class="card" style="border-left-color: #c0392b;">
+            <div class="badges-container">
+                <span class="role-badge role-phutrach">Phụ trách chính</span>
+            </div>
+            <h3 class="person-name">Phạm Dương Đại</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Hồng Đai 2</div>
+            <div class="person-info"><strong>Ngày thăng:</strong> 28/04/2024</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 70%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 70%; background-color: var(--accent-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đứng lớp thường xuyên. Bao quát, xử lí công việc trong lớp và phụ trách thu chi quỹ lớp.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #2980b9;">
+            <div class="badges-container">
+                <span class="role-badge role-dunglop">Đứng lớp</span>
+            </div>
+            <h3 class="person-name">Nguyễn Xuân Đạt</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Hoàng Đai 1</div>
+            <div class="person-info"><strong>Ngày thăng:</strong> 07/12/2024</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 35%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 35%; background-color: var(--danger-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--danger-color);">
+                Thời gian trước đứng lớp thường xuyên, <strong>gần đây bận xin tạm nghỉ 1 thời gian</strong> vì công việc cá nhân và gia đình. Vẫn bao quát, xử lí công việc trong lớp và hỗ trợ chuyên môn.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #2980b9;">
+            <div class="badges-container">
+                <span class="role-badge role-dunglop">Đứng lớp</span>
+            </div>
+            <h3 class="person-name">Thiều Văn Dương</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Hoàng Đai 1</div>
+            <div class="person-info"><strong>Ngày thăng:</strong> 07/12/2024</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 70%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 70%; background-color: var(--accent-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Thời gian trước bận ít qua lớp được, gần đây đã sắp xếp đứng lớp thường xuyên. Tích cực ủng hộ quỹ lớp và quỹ Võ đường. Chuyên đào tạo các thí sinh thi giải của lớp.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #2980b9;">
+            <div class="badges-container">
+                <span class="role-badge role-dunglop">Đứng lớp</span>
+            </div>
+            <h3 class="person-name">Nguyễn Kim Tình</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Hoàng Đai 2</div>
+            <div class="person-info"><strong>Ngày thăng:</strong> 14/01/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 30%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 30%; background-color: var(--danger-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Thường xuyên đứng lớp nhiều năm, vài tháng vừa qua bận ít qua lớp được, nhưng gần đây đã sắp xếp đứng lớp trở lại. Hỗ trợ chuyên môn và đào tạo thi giải cho các thí sinh của Võ đường.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #e67e22;">
+            <div class="badges-container">
+                <span class="role-badge role-dunglop">Đứng lớp</span>
+                <span class="role-badge role-thuki">Thư kí Võ Đường</span>
+            </div>
+            <h3 class="person-name">Ngô Quỳnh Anh</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Hồng Đai 3</div>
+            <div class="person-info"><strong>Ngày thăng:</strong> 23/07/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 80%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 80%; background-color: var(--accent-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Phụ trách chính công việc thống kê, báo cáo, thu chi của Võ đường. Do <strong>sức khoẻ yếu và công việc nhiều</strong> nên đến lớp khi thu xếp được thời gian. Đào tạo các thí sinh thi giải và tích cực tham gia các hoạt động của võ đường.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #2980b9;">
+            <div class="badges-container">
+                <span class="role-badge role-dunglop">Đứng lớp</span>
+            </div>
+            <h3 class="person-name">Trần Thị Hải Yến</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Hồng Đai 3</div>
+            <div class="person-info"><strong>Ngày thăng:</strong> 23/07/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 70%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 70%; background-color: var(--accent-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đứng lớp thường xuyên (có thời gian vài tháng trước bận ít qua lớp, nhưng gần đây đã sắp xếp đứng lớp thường xuyên). Đào tạo các thí sinh thi giải. Tích cực tham gia các hoạt động của lớp và Võ đường.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #16a085;">
+            <div class="badges-container">
+                <span class="role-badge role-phuta">Phụ tá</span>
+            </div>
+            <h3 class="person-name">Võ Nhật Quỳnh Lam</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Lục Đai 3</div>
+            <div class="person-info"><strong>Ngày thăng:</strong> 02/11/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 50%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 50%; background-color: var(--warning-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Do bận học nên xin phép chưa qua lớp thường xuyên. Hiện đang hỗ trợ các thí sinh thi giải của lớp.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

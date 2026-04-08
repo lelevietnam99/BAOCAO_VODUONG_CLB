@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo CLB Trường Trần Đại Nghĩa</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        /* Thẻ thông tin tổng quan lớp võ */
+        .class-summary {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-stat-box {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .summary-stat {
+            text-align: center;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .summary-stat .number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .summary-stat .label {
+            font-size: 1.05em;
+            opacity: 0.95;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .summary-notes {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .note-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .note-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .badge-info {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .badge-success {
+            background-color: var(--success-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        /* Lưới hiển thị nhân sự */
+        .personnel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .role-hlv { background-color: #d35400; } 
+        .role-dunglop { background-color: #2980b9; } 
+
+        .person-name {
+            font-size: 1.25em;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+        }
+
+        .person-info {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .person-info strong {
+            color: var(--secondary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            height: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .status-note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #555;
+            border-left: 3px solid var(--warning-color);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .class-summary {
+                flex-direction: column;
+            }
+            .summary-stat-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Quay lại trang Bảng tổng hợp</a>
+
+    <header class="page-header">
+        <h1>BÁO CÁO CLB TRƯỜNG TRẦN ĐẠI NGHĨA</h1>
+    </header>
+
+    <h2 class="section-title">1. Thông tin Lớp Võ</h2>
+    <div class="class-summary">
+        <div class="summary-stat-box">
+            <div class="summary-stat">
+                <p class="number">55</p>
+                <p class="label">Tổng số Võ sinh</p>
+            </div>
+            <div class="summary-stat">
+                <p class="number">55%</p>
+                <p class="label">Hoàn thành CT mới</p>
+            </div>
+        </div>
+        <div class="summary-notes">
+            <div class="note-item">
+                <span class="badge-info">Lịch sinh hoạt</span> Thứ 3, Thứ 5, Thứ 7 hàng tuần.
+            </div>
+            <div class="note-item">
+                <strong>Tỷ lệ chung:</strong> Tỷ lệ hoàn thành bài thi thăng đai chung đạt 55% trên tổng số 55 em.
+            </div>
+            <div class="note-item">
+                <span class="badge-success">Đánh giá chuyên môn</span> Nhóm võ sinh còn lại đã học xong các bài quyền; hiện chỉ còn phần đối luyện, tự vệ và kỹ thuật đấm gió là sẽ hoàn thiện chương trình.
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">2. Tình hình Nhân sự & Ban Huấn Luyện</h2>
+    <div class="personnel-grid">
+        
+        <div class="card" style="border-left-color: #c0392b;">
+            <div class="badges-container">
+                <span class="role-badge role-hlv">HLV Phụ trách</span>
+            </div>
+            <h3 class="person-name">Thầy Thích Pháp Tánh</h3>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Huấn luyện viên phụ trách chuyên môn trực tiếp của Câu lạc bộ.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #d35400;">
+            <div class="badges-container">
+                <span class="role-badge role-hlv">HLV Phụ trách</span>
+            </div>
+            <h3 class="person-name">Thích Pháp Thanh</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Lục Đai II</div>
+            <div class="person-info"><strong>Ngày thi gần nhất:</strong> 20/02/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 40%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 40%; background-color: var(--warning-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Đã hoàn thành 40% chương trình thi thăng đai tiếp theo.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #d35400;">
+            <div class="badges-container">
+                <span class="role-badge role-hlv">HLV Phụ trách</span>
+            </div>
+            <h3 class="person-name">Phạm Ngọc Thiên Thanh</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Hoàng Đai I</div>
+            <div class="person-info"><strong>Ngày thi gần nhất:</strong> 20/02/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 80%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 80%; background-color: var(--accent-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành 80% chương trình thi thăng đai tiếp theo.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #d35400;">
+            <div class="badges-container">
+                <span class="role-badge role-hlv">HLV Phụ trách</span>
+            </div>
+            <h3 class="person-name">Lý Hoàng Mạnh</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Lục Đai II</div>
+            <div class="person-info"><strong>Ngày thi gần nhất:</strong> 20/02/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 50%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 50%; background-color: var(--warning-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Đã hoàn thành 50% chương trình thi thăng đai tiếp theo.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

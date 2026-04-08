@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Lớp Võ Phổ Quang - CLB PQQ Hà Nội</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        /* Thẻ thông tin tổng quan lớp võ */
+        .class-summary {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-stat-box {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .summary-stat {
+            text-align: center;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .summary-stat .number {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .summary-stat .label {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-notes {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 25px;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        /* Lưới hiển thị nhân sự */
+        .personnel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+            align-self: flex-start;
+        }
+
+        .role-phutrach { background-color: #c0392b; } 
+        .role-monsinh { background-color: #0984e3; } 
+
+        .person-name {
+            font-size: 1.25em;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+        }
+
+        .person-info {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .person-info strong {
+            color: var(--secondary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            height: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .status-note {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #555;
+            border-left: 3px solid var(--warning-color);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .class-summary {
+                flex-direction: column;
+            }
+            .summary-stat-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Quay lại trang Bảng tổng hợp</a>
+
+    <header class="page-header">
+        <h1>BÁO CÁO LỚP VÕ PHỔ QUANG<br><span style="font-size: 0.6em; font-weight: normal;">(CLB Phật Quang Quyền Hà Nội)</span></h1>
+    </header>
+
+    <h2 class="section-title">1. Tình hình Lớp Võ</h2>
+    <div class="class-summary">
+        <div class="summary-stat-box">
+            <div class="summary-stat">
+                <p class="number">80%</p>
+                <p class="label">Hoàn thành CT mới</p>
+            </div>
+        </div>
+        <div class="summary-notes">
+            <strong>Tình hình tập luyện:</strong> 80% võ sinh của lớp đã hoàn thành chương trình học (tính từ Nâu đai đến Hồng đai đệ nhị cấp).
+        </div>
+    </div>
+
+    <h2 class="section-title">2. Báo cáo Ban Huấn Luyện & Huynh Đệ Đang Đào Tạo Thành Hướng đến Môn Sinh</h2>
+    <div class="personnel-grid">
+        
+        <div class="card" style="border-left-color: #c0392b;">
+            <span class="role-badge role-phutrach">Phụ trách lớp</span>
+            <h3 class="person-name">Đồng Ngọc Hưng</h3>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 90%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 90%; background-color: var(--accent-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Chưa học xong 1 bài quyền Lôi Long Đao theo chương trình mới, còn lại đã hoàn thành đủ. Cuối tuần sẽ quay video trả nợ nốt các phần còn lại.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Vũ Đức Quyết</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 22/01/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Trịnh Thị Mai Anh</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 27/04/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành chương trình.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Đinh Tiến Thành</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 23/07/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Nguyễn Văn Bắc</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 23/07/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Chu Kiếm Hải</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 25/01/2023</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Chu Nguyệt Hà</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 25/01/2023</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Nguyễn Anh Thư</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 23/07/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #0984e3;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Lương Viết Vũ Bảo</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 23/07/2026</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 100%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--success-color);">
+                Đã hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: hsl(66, 78%, 57%);">
+            <span class="role-badge role-monsinh">Môn Sinh</span>
+            <h3 class="person-name">Thân Thị Thúy Nguyên</h3>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 0%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="status-note" style="border-left-color: var(--danger-color);">
+                Sức khỏe yếu, không tập luyện mạnh. Chủ yếu hỗ trợ lớp và hướng dẫn võ sinh nhỏ, chưa hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #e74c3c;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Vũ Ngọc Linh</h3>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 0%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="status-note" style="border-left-color: var(--danger-color);">
+                Tạm nghỉ do đi làm trang trải học phí, chưa hoàn thành bài thi.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #f39c12;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Lê Đức Duy</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 02/11/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 0%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Chưa hoàn thành chương trình.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #e74c3c;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Trịnh Trung Đức</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 02/11/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 0%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="status-note" style="border-left-color: var(--danger-color);">
+                Chưa hoàn thành vì bận ôn thi đại học.
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #f39c12;">
+            <span class="role-badge role-monsinh">Hướng đến Môn Sinh</span>
+            <h3 class="person-name">Phạm Đình Tiến</h3>
+            <div class="person-info"><strong>Ngày thăng đai:</strong> 27/04/2025</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 0%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>
+            <div class="status-note" style="border-left-color: var(--warning-color);">
+                Thời gian tập hạn chế, chưa hoàn thành chương trình.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

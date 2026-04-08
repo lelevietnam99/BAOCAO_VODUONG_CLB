@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Võ Đường Viên Quang</title>
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #283593;
+            --accent-color: #0288d1;
+            --success-color: #2e7d32;
+            --warning-color: #f9a825;
+            --danger-color: #c62828;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .page-header h1 { margin: 0; font-size: 2.2em; text-transform: uppercase; letter-spacing: 2px; }
+        .page-header p { margin: 10px 0 0; opacity: 0.9; font-size: 1.1em; }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.6em;
+            border-left: 6px solid var(--accent-color);
+            padding-left: 15px;
+            margin: 40px 0 25px;
+            background: #fff;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Dashboard tổng hợp CLB */
+        .clb-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .clb-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent-color);
+        }
+
+        .clb-card h3 { margin-top: 0; color: var(--primary-color); border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        
+        .clb-info { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; }
+        
+        .prog-table { width: 100%; font-size: 0.9em; border-collapse: collapse; }
+        .prog-table td { padding: 6px 0; border-bottom: 1px solid #f9f9f9; }
+        .prog-val { text-align: right; font-weight: 600; color: var(--success-color); }
+
+        /* Lưới nhân sự */
+        .personnel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            border-top: 1px solid #eee;
+        }
+
+        .badges-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .role-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .bg-manager { background-color: #1a237e; }
+        .bg-instructor { background-color: #0288d1; }
+        .bg-assistant { background-color: #43a047; }
+        .bg-potential { background-color: #6a1b9a; }
+        .bg-off { background-color: #78909c; }
+        .bg-injury { background-color: #c62828; }
+
+        .person-name { font-size: 1.2em; font-weight: bold; margin: 0; color: var(--primary-color); }
+        .dharma-name { font-size: 0.9em; color: #666; font-style: italic; margin-bottom: 10px; }
+        
+        .info-row { font-size: 0.9em; margin-bottom: 5px; }
+        .info-row strong { color: #555; }
+
+        .progress-container { margin: 15px 0; }
+        .progress-label { display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 5px; font-weight: 600; }
+        .progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+
+        .note-box {
+            margin-top: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            border-left: 3px solid var(--warning-color);
+        }
+
+        @media (max-width: 768px) {
+            .clb-dashboard { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Quay lại Bảng tổng hợp</a>
+
+    <header class="page-header">
+        <h1>VÕ ĐƯỜNG VIÊN QUANG</h1>
+        <p>Báo cáo Quý 1/2026 - Tổng hợp Hệ thống CLB trực thuộc</p>
+    </header>
+
+    <h2 class="section-title">I. Tình hình các CLB trực thuộc</h2>
+    <div class="clb-dashboard">
+        
+        <div class="clb-card">
+            <h3>1. CLB TP Vinh 1</h3>
+            <div class="clb-info"><span>Sĩ số: 15</span></div>
+            <table class="prog-table">
+                <tr><td>Lục Đai II (1 VS)</td><td class="prog-val">85%</td></tr>
+                <tr><td>Lam Đai II (2 VS)</td><td class="prog-val">90%</td></tr>
+                <tr><td>Lam Đai I (2 VS)</td><td class="prog-val">75%</td></tr>
+                <tr><td>Nâu Đai (10 VS)</td><td class="prog-val">25%</td></tr>
+            </table>
+        </div>
+
+        <div class="clb-card">
+            <h3>2. CLB TP Vinh 2</h3>
+            <div class="clb-info"><span>Sĩ số: 21</span></div>
+            <table class="prog-table">
+                <tr><td>Lam Đai IV (3 VS)</td><td class="prog-val">50%</td></tr>
+                <tr><td>Lam Đai II (3 VS)</td><td class="prog-val">85%</td></tr>
+                <tr><td>Lam Đai I (9 VS)</td><td class="prog-val">85%</td></tr>
+                <tr><td>Nâu Đai (6 VS)</td><td class="prog-val">55%</td></tr>
+            </table>
+        </div>
+
+        <div class="clb-card">
+            <h3>3. CLB Xanh Tuệ Đức</h3>
+            <div class="clb-info"><span>Sĩ số: 17</span></div>
+            <table class="prog-table">
+                <tr><td>Lam Đai III (2 VS)</td><td class="prog-val">30%</td></tr>
+                <tr><td>Lam Đai II (3 VS)</td><td class="prog-val">35%</td></tr>
+                <tr><td>Lam Đai I (15 VS)</td><td class="prog-val">35%</td></tr>
+            </table>
+        </div>
+
+        <div class="clb-card">
+            <h3>4. CLB Kim Liên</h3>
+            <div class="clb-info"><span>Sĩ số: 30</span></div>
+            <table class="prog-table">
+                <tr><td>Lam Đai I (12 VS)</td><td class="prog-val">55%</td></tr>
+                <tr><td>Nâu Đai cũ (8 VS)</td><td class="prog-val">60%</td></tr>
+                <tr><td>Nâu Đai mới (9 VS)</td><td class="prog-val">Đang tập cơ bản</td></tr>
+            </table>
+        </div>
+
+        <div class="clb-card">
+            <h3>5. CLB Hương Lâm</h3>
+            <div class="clb-info"><span>Sĩ số: 35</span></div>
+            <table class="prog-table">
+                <tr><td>Lục Đai I (1 VS)</td><td class="prog-val">55%</td></tr>
+                <tr><td>Lam Đai IV/III</td><td class="prog-val">50% / 40%</td></tr>
+                <tr><td>Lam Đai II/I</td><td class="prog-val">30% / 50%</td></tr>
+                <tr><td>Nâu Đai (2 VS)</td><td class="prog-val">30%</td></tr>
+            </table>
+        </div>
+
+        <div class="clb-card">
+            <h3>6. Lớp Võ Viên Quang</h3>
+            <div class="clb-info"><span>Sĩ số: 55</span></div>
+            <table class="prog-table">
+                <tr><td>Hồng Đai IV (1 VS)</td><td class="prog-val">100%</td></tr>
+                <tr><td>Lục Đai II (4 VS)</td><td class="prog-val">90%</td></tr>
+                <tr><td>Nâu Đai (21 VS)</td><td class="prog-val">40%</td></tr>
+            </table>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">II. Ban Điều Hành & Ban Huấn Luyện</h2>
+    <div class="personnel-grid">
+        
+        <div class="card" style="border-top: 5px solid gold;">
+            <div class="badges-container"><span class="role-badge bg-manager">Đường Trưởng</span></div>
+            <p class="person-name">Thầy Thích Pháp Bản</p>
+            <div class="note-box">Chủ nhiệm Lớp Võ Viên Quang và CLB Hương Lâm.</div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-manager">Trưởng Ban Huấn Luyện</span></div>
+            <p class="person-name">Lê Văn Hiếu</p>
+            <div class="dharma-name">Pháp danh: Lương Hưng Chính</div>
+            <div class="info-row"><strong>Cấp:</strong> Chuẩn Bạch Đai (07/12/2024)</div>
+            <div class="note-box">Đứng lớp tại CLB Vinh 2 và Phó chủ nhiệm Lớp võ Viên Quang.</div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-manager">Phó Ban Huấn Luyện</span></div>
+            <p class="person-name">Nguyễn Thị Thảo</p>
+            <div class="dharma-name">Pháp danh: Hoà Lý Anh</div>
+            <div class="info-row"><strong>Cấp:</strong> Chuẩn Bạch Đai (07/12/2024)</div>
+            <div class="note-box">Đứng lớp tại CLB Xanh Tuệ Đức.</div>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">III. Đội ngũ Huấn Luyện Viên Đứng Lớp</h2>
+    <div class="personnel-grid">
+        
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-instructor">Đứng lớp chính</span></div>
+            <p class="person-name">Nguyễn Đình Quảng</p>
+            <div class="dharma-name">Pháp danh: Trí Giới Hưng</div>
+            <div class="info-row"><strong>CLB:</strong> TP Vinh 1</div>
+            <div class="progress-container">
+                <div class="progress-label"><span>Tiến độ CT mới</span><span>65%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 65%; background-color: var(--warning-color);"></div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-instructor">Đứng lớp</span></div>
+            <p class="person-name">Trịnh Thị Văn Bình</p>
+            <div class="dharma-name">Pháp danh: Mẫn Tuệ Viên</div>
+            <div class="info-row"><strong>CLB:</strong> TP Vinh 1</div>
+            <div class="progress-container">
+                <div class="progress-label"><span>Tiến độ CT mới</span><span>80%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 80%; background-color: var(--success-color);"></div></div>
+            </div>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--danger-color);">
+            <div class="badges-container">
+                <span class="role-badge bg-instructor">Đứng lớp chính</span>
+                <span class="role-badge bg-injury">Chấn thương</span>
+            </div>
+            <p class="person-name">Lê Văn Hoà</p>
+            <div class="info-row"><strong>CLB:</strong> Kim Liên</div>
+            <div class="progress-container">
+                <div class="progress-label"><span>Tiến độ</span><span>50%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 50%; background-color: #eee;"></div></div>
+            </div>
+            <div class="note-box" style="border-left-color: var(--danger-color);">
+                Chấn thương cả 2 chân. Xin phép dừng tập luyện chờ mổ chân.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-instructor">Đứng lớp</span></div>
+            <p class="person-name">Bùi Thanh Lịch</p>
+            <div class="info-row"><strong>CLB:</strong> Hương Lâm (Lục Đai I)</div>
+            <div class="progress-container">
+                <div class="progress-label"><span>Tiến độ</span><span>50%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 50%; background-color: var(--warning-color);"></div></div>
+            </div>
+            <div class="note-box">Thường xuyên về Võ đường tập huấn.</div>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">IV. Thư ký & Phụ tá (Lớp Võ Viên Quang & Vinh 1)</h2>
+    <div class="personnel-grid">
+        
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-assistant">Thư ký</span></div>
+            <p class="person-name">Nguyễn Thanh Huyền</p>
+            <div class="dharma-name">Pháp danh: Mẫn An Tú</div>
+            <div class="progress-container">
+                <div class="progress-label"><span>Hoàn thành CT</span><span>100%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            </div>
+            <div class="note-box">Bận công việc nên chưa tham gia đứng lớp đầy đủ.</div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container">
+                <span class="role-badge bg-assistant">Phụ tá</span>
+                <span class="role-badge bg-injury">Chấn thương</span>
+            </div>
+            <p class="person-name">Trần Thị Hà Vy</p>
+            <div class="progress-container">
+                <div class="progress-label"><span>Hoàn thành CT</span><span>100%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            </div>
+            <div class="note-box" style="border-left-color: var(--danger-color);">Đứt dây chằng đầu gối, tạm thời tập luyện nhẹ.</div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-assistant">Phụ tá</span></div>
+            <p class="person-name">Lê Quốc Xường</p>
+            <div class="progress-container">
+                <div class="progress-label"><span>Hoàn thành CT</span><span>100%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%; background-color: var(--success-color);"></div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-assistant">Phụ tá Viên Quang</span></div>
+            <p class="person-name">Nhóm: Yến Vy, Khánh Vy, Thục Lê</p>
+            <p style="font-size: 0.85em; color: #666;">Tiến độ hoàn thành: 80% - 100% chương trình.</p>
+        </div>
+
+    </div>
+
+    <h2 class="section-title">V. Ứng viên Tiềm năng & Nhân sự Tạm nghỉ</h2>
+    <div class="personnel-grid">
+        
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-potential">Tiềm năng</span></div>
+            <p class="person-name">Phan Trúc Lâm & Nguyễn Văn Dũng</p>
+            <div class="progress-container">
+                <div class="progress-label"><span>Tiến độ Lam đai III</span><span>80%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 80%; background-color: var(--success-color);"></div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="badges-container"><span class="role-badge bg-off">Nhân sự tạm nghỉ</span></div>
+            <p class="person-name">Diệp Linh, Bảo Anh, Hoàng Thị Đoan</p>
+            <div class="note-box">Lý do: Về quê làm việc, bận đi làm, bận học tập tại trường.</div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

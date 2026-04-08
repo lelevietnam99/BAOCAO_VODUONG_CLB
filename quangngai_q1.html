@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo CLB Quảng Ngãi</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #d35400;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --bg-color: #fdf2e9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #a04000;
+            text-decoration: underline;
+        }
+
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        /* Thẻ thông tin tổng quan lớp võ */
+        .class-summary {
+            background: linear-gradient(135deg, #d35400, #e67e22);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(211, 84, 0, 0.2);
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-stat-box {
+            display: flex;
+            gap: 15px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .summary-stat {
+            text-align: center;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .summary-stat .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1;
+            color: #fff;
+        }
+
+        .summary-stat .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .summary-notes {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 0.95em;
+        }
+
+        .note-item {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .note-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .badge-loc {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        /* Lưới hiển thị nhân sự */
+        .personnel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--primary-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .role-chunhiem { background-color: #c0392b; } 
+        .role-phuta { background-color: #16a085; } 
+        .role-thuki { background-color: #8e44ad; } 
+        .role-potential { background-color: #2980b9; border: 1px solid #fff; }
+
+        .person-name {
+            font-size: 1.3em;
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+            font-weight: bold;
+        }
+
+        .person-info {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            height: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.4s ease;
+        }
+
+        .status-note {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #555;
+            border-left: 4px solid var(--warning-color);
+            margin-top: auto;
+        }
+
+        .highlight-green { color: var(--success-color); font-weight: bold; }
+        .highlight-orange { color: var(--accent-color); font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .class-summary { flex-direction: column; }
+            .summary-stat-box { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">← Quay lại trang Bảng tổng hợp</a>
+
+    <header class="page-header">
+        <h1>BÁO CÁO CÂU LẠC BỘ QUẢNG NGÃI</h1>
+    </header>
+
+    <h2 class="section-title">1. Thông tin Lớp Võ</h2>
+    <div class="class-summary">
+        <div class="summary-stat-box">
+            <div class="summary-stat">
+                <p class="number">62</p>
+                <p class="label">Tổng Võ sinh</p>
+            </div>
+            <div class="summary-stat">
+                <p class="number">12</p>
+                <p class="label">Tại Thiên Bút</p>
+            </div>
+            <div class="summary-stat">
+                <p class="number">50</p>
+                <p class="label">Tại Đức Lâm</p>
+            </div>
+        </div>
+        <div class="summary-notes">
+            <div class="note-item">
+                <span class="badge-loc">Chùa Thiên Bút</span> Thứ 3, 5 | Sĩ số 12 em (Lam đai & Nâu đai). 
+                <br><em>Hiện trạng:</em> Một số HĐ vắng học do bận công việc và việc Chúng; chưa kết nối được sinh viên.
+            </div>
+            <div class="note-item">
+                <span class="badge-loc">Chùa Đức Lâm</span> Thứ 6, 7 | Sĩ số 50 em (Nâu đai).
+                <br><em>Điểm sáng:</em> Các em ham thích tập luyện, phụ huynh ủng hộ. Được học kèm <span class="highlight-green">Đạo lý</span> mỗi buổi tập.
+            </div>
+            <div class="note-item">
+                <span class="highlight-orange">Khó khăn chung:</span> Nhân sự hướng dẫn mỏng tại Đức Lâm khiến việc theo sát bài chưa tối ưu; võ sinh nhỏ tuổi lực đánh còn yếu và đôi khi ồn ào.
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">2. Tình hình Nhân sự & Ban Huấn Luyện</h2>
+    <div class="personnel-grid">
+        
+        <div class="card" style="border-left-color: #c0392b;">
+            <div class="badges-container">
+                <span class="role-badge role-chunhiem">Chủ nhiệm / Đứng lớp</span>
+            </div>
+            <h3 class="person-name">Trương Quang Hiếu</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Lam đai IV (09/11/2025)</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 60%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 60%; background-color: var(--warning-color);"></div></div>
+            <div class="status-note">Phụ trách chung và trực tiếp đứng lớp tại các điểm chùa.</div>
+        </div>
+
+        <div class="card" style="border-left-color: #16a085;">
+            <div class="badges-container">
+                <span class="role-badge role-phuta">Phụ tá</span>
+                <span class="role-badge role-thuki">Thư ký</span>
+                <span class="role-badge role-potential">Tiềm năng Môn sinh</span>
+            </div>
+            <h3 class="person-name">Trương Trần Xuân Thủy</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Lam đai I (09/11/2025)</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 70%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 70%; background-color: var(--accent-color);"></div></div>
+            <div class="status-note">Hỗ trợ lớp thường xuyên tại Chùa Thiên Bút (Thứ 3, 5).</div>
+        </div>
+
+        <div class="card" style="border-left-color: #16a085;">
+            <div class="badges-container">
+                <span class="role-badge role-phuta">Phụ tá</span>
+                <span class="role-badge role-potential">Tiềm năng Môn sinh</span>
+            </div>
+            <h3 class="person-name">Trương Quang Hưng</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Lam đai III (20/02/2026)</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 50%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 50%; background-color: var(--warning-color);"></div></div>
+            <div class="status-note" style="border-left-color: var(--danger-color);">Gần đây bận việc học nên ít đến lớp hỗ trợ.</div>
+        </div>
+
+        <div class="card" style="border-left-color: #16a085;">
+            <div class="badges-container">
+                <span class="role-badge role-phuta">Phụ tá</span>
+                <span class="role-badge role-potential">Tiềm năng Môn sinh</span>
+            </div>
+            <h3 class="person-name">Huỳnh Ngọc Quang</h3>
+            <div class="person-info"><strong>Cấp đai:</strong> Nâu đai</div>
+            <div class="person-info"><strong>Tiến độ CT mới:</strong> 90%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 90%; background-color: var(--success-color);"></div></div>
+            <div class="status-note">Hỗ trợ lớp thường xuyên tại Chùa Đức Lâm (Thứ 6, 7).</div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

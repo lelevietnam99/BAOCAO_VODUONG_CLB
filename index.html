@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Các Võ Đường</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        /* Phần Thống kê 4 Quý */
+        .dashboard-header {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+        .quarter-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .quarter-stat h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .chart-container {
+            width: 180px;
+            height: 180px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .stat-numbers {
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .done-text { color: var(--success-color); font-weight: bold; }
+        .miss-text { color: var(--danger-color); font-weight: bold; }
+
+        /* Phần Tìm kiếm & Bảng */
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .status-done {
+            color: var(--success-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .status-done:hover {
+            text-decoration: underline;
+        }
+
+        .status-miss {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        /* Modal (Cửa sổ hiển thị danh sách) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 60%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .modal-list li {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .modal-list li:hover {
+            transform: translateX(5px);
+            background-color: #fff;
+            border-color: #d1d8e0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .stt-badge {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 1em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .item-text {
+            font-size: 1.1em;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .modal.done-mode .stt-badge { background-color: var(--success-color); }
+        .modal.miss-mode .stt-badge { background-color: var(--danger-color); }
+        .modal.done-mode h2 { color: var(--success-color); }
+        .modal.miss-mode h2 { color: var(--danger-color); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>TỔNG HỢP BÁO CÁO CÁC VÕ ĐƯỜNG - CÂU LẠC BỘ - NĂM 2026</h1>
+    <div class="dashboard-header">
+        <strong>Hướng dẫn:</strong> Click trực tiếp vào các phần của biểu đồ từng quý để xem chi tiết danh sách đơn vị.
+    </div>
+
+    <div class="stats-section">
+        <div class="quarter-stat">
+            <h3>QUÝ 1</h3>
+            <div class="chart-container">
+                <canvas id="chartQ1"></canvas>
+            </div>
+            <div class="stat-numbers">
+                <span class="done-text">■ Đã báo cáo: <span id="doneQ1">0</span></span><br>
+                <span class="miss-text">■ Chưa báo cáo: <span id="missQ1">0</span></span>
+            </div>
+        </div>
+
+        <div class="quarter-stat">
+            <h3>QUÝ 2</h3>
+            <div class="chart-container">
+                <canvas id="chartQ2"></canvas>
+            </div>
+            <div class="stat-numbers">
+                <span class="done-text">■ Đã báo cáo: <span id="doneQ2">0</span></span><br>
+                <span class="miss-text">■ Chưa báo cáo: <span id="missQ2">0</span></span>
+            </div>
+        </div>
+
+        <div class="quarter-stat">
+            <h3>QUÝ 3</h3>
+            <div class="chart-container">
+                <canvas id="chartQ3"></canvas>
+            </div>
+            <div class="stat-numbers">
+                <span class="done-text">■ Đã báo cáo: <span id="doneQ3">0</span></span><br>
+                <span class="miss-text">■ Chưa báo cáo: <span id="missQ3">0</span></span>
+            </div>
+        </div>
+
+        <div class="quarter-stat">
+            <h3>QUÝ 4</h3>
+            <div class="chart-container">
+                <canvas id="chartQ4"></canvas>
+            </div>
+            <div class="stat-numbers">
+                <span class="done-text">■ Đã báo cáo: <span id="doneQ4">0</span></span><br>
+                <span class="miss-text">■ Chưa báo cáo: <span id="missQ4">0</span></span>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" id="searchInput" class="search-box" placeholder="Nhập tên Võ đường / CLB để tìm kiếm..." onkeyup="searchTable()">
+
+    <table id="reportTable">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Võ Đường / CLB</th>
+                <th>Quý 1</th>
+                <th>Quý 2</th>
+                <th>Quý 3</th>
+                <th>Quý 4</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+</div>
+
+<div id="detailModal" class="modal">
+    <div class="modal-content"> 
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle">Danh sách</h2>
+        <ul id="modalList" class="modal-list"></ul>
+    </div>
+</div>
+
+<script>
+    const data = [
+        { name: "Võ Đường Hồng Quang", q1: "voduonghongquang_q1.html", q2: "", q3: "", q4: "" },
+        { name: "CLB Khánh Vân - Ninh Bình", q1: "ninhbinh_q1.html", q2: "", q3: "", q4: "" },
+        { name: "CLB Bảo Quang - Võ Đường Pháp Quang", q1: "baoquang_q1.html", q2: "", q3: "", q4: "" },
+        { name: "Lớp 246 - Võ Đường Pháp Quang", q1: "phapquang_q1.html", q2: "", q3: "", q4: "" },
+        { name: "CLB PQQ - Hàn Quốc", q1: "hanquoc_q1.html", q2: "", q3: "", q4: "" },
+        { name: "CLB Định Quang - Võ Đường Pháp Quang", q1: "dinhquang_q1.html", q2: "", q3: "", q4: "" },
+        { name: "CLB Đạo Minh", q1: "daominh_q1.html", q2: "", q3: "", q4: "" },
+        { name: "CLB Đăng Quang - Võ Đường Pháp Quang", q1: "dangquang_q1.html", q2: "", q3: "", q4: "" },
+        { name: "CLB VCT ĐH Khoa Học Sức Khỏe - Võ Đường Pháp Quang", q1: "dhkhoahocsuckhoe_q1.html", q2: "", q3: "", q4: "" },
+        { name: "Lớp 357 QK7 - Võ Đường Pháp Quang", q1: "qk7_q1.html", q2: "", q3: "", q4: "" },
+        { name: "Lớp Võ Phổ Quang – Võ Đường Thắng Quang", q1: "phoquang_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Quang Phúc - Võ Đường Thắng Quang.", q1: "quangphuc_q1.html", q2: "", q3: "", q4: "" },
+         { name: "Câu Lạc Bộ Thái Minh - Võ Đường Thắng Quang", q1: "thaiminh_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Tiến Minh - Võ Đường Thắng Quang", q1: "tienminh_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Linh Thông - Võ Đường Thắng Quang", q1: "linhthong_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Quận 7 - Võ Đường Pháp Quang", q1: "quan7_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Vũ Minh 1 & 2 - Võ Đường Trí Vũ", q1: "vuminh_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Xuân Lộc - Võ Đường Trí Vũ", q1: "xuanloc_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Khánh Minh - Võ Đường Trí Vũ", q1: "khanhminh_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Long Đức - Võ Đường Trí Vũ", q1: "longduc_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Nguyễn Bỉnh Khiêm - Võ Đường Trí Vũ", q1: "nguyenbinhkhiem_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Nguyễn Trãi - Võ Đường Trí Vũ", q1: "nguyentrai_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Trần Đại Nghĩa - Võ Đường Trí Vũ", q1: "trandainghia_q1.html", q2: "", q3: "", q4: "" },
+         { name: "Lớp Võ Tổ Đình - Võ Đường Trí Vũ", q1: "todinh_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Thái Nguyên - Võ Đường Thắng Quang", q1: "thainguyen_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Bắc Ninh - Võ Đường Thắng Quang", q1: "bacninh_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Phước Quang - Võ Đường Trí Vũ", q1: "phuocquang_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Đại Học Ngân Hàng - Võ Đường Pháp Quang", q1: "dhnganhang_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Hoàng Xá - Võ Đường Thắng Quang", q1: "hoangxa_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Tiến Quang - Huế", q1: "tienquang_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Linh Quang - Võ Đường Thắng Quang", q1: "linhquang_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Tp Vinh 1 - Võ Đường Viên Quang", q1: "tpvinh_q1.html", q2: "", q3: "", q4: "" },
+         { name: "Võ Đường Viên Quang", q1: "vienquang_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Huệ Lâm - Đà Lạt", q1: "", q2: "", q3: "", q4: "" },
+         { name: "CLB Linh Bửu - Võ Đường Trí Vũ", q1: "linhbuu_q1.html", q2: "", q3: "", q4: "" },
+         { name: "CLB Đông Quang - Võ Đường Thắng Quang", q1: "", q2: "", q3: "", q4: "" },
+         { name: "CLB Hải Lâm - Võ Đường Thắng Quang", q1: "", q2: "", q3: "", q4: "" },
+         { name: "CLB Hưng Long - Thái Bình", q1: "", q2: "", q3: "", q4: "" },
+         { name: "CLB Mễ Trì - Võ Đường Thắng Quang", q1: "", q2: "", q3: "", q4: "" },
+         { name: "CLB PQQ Nhật Bản", q1: "", q2: "", q3: "", q4: "" },
+        
+      //  { name: "", q1: "", q2: "", q3: "", q4: "" },
+    ];
+
+    // Đối tượng lưu trữ số liệu và danh sách cho từng Quý
+    let qStats = {
+        q1: { done: 0, miss: 0, listDone: [], listMiss: [] },
+        q2: { done: 0, miss: 0, listDone: [], listMiss: [] },
+        q3: { done: 0, miss: 0, listDone: [], listMiss: [] },
+        q4: { done: 0, miss: 0, listDone: [], listMiss: [] }
+    };
+    
+    let charts = {}; // Lưu trữ các đối tượng Chart để dễ dàng reset
+
+    function init() {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        
+        // Reset lại dữ liệu trước khi tính toán
+        Object.keys(qStats).forEach(q => {
+            qStats[q] = { done: 0, miss: 0, listDone: [], listMiss: [] };
+        });
+
+        data.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            const quarters = ['q1', 'q2', 'q3', 'q4'];
+            let quarterHTML = '';
+            
+            quarters.forEach((q) => {
+                if (item[q]) { 
+                    // Có báo cáo
+                    quarterHTML += `<td><a href="${item[q]}" class="status-done" target="_blank">Đã Báo Cáo</a></td>`;
+                    qStats[q].done++;
+                    qStats[q].listDone.push(item.name);
+                } else { 
+                    // Chưa báo cáo
+                    quarterHTML += `<td><span class="status-miss">Chưa Báo Cáo</span></td>`;
+                    qStats[q].miss++;
+                    qStats[q].listMiss.push(item.name);
+                }
+            });
+
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td><strong>${item.name}</strong></td>
+                ${quarterHTML}
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Cập nhật số liệu hiển thị trên HTML cho 4 Quý
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById(`doneQ${i}`).innerText = qStats[`q${i}`].done;
+            document.getElementById(`missQ${i}`).innerText = qStats[`q${i}`].miss;
+        }
+
+        renderCharts();
+    }
+
+    function renderCharts() {
+        const quarters = ['q1', 'q2', 'q3', 'q4'];
+        
+        quarters.forEach((q, index) => {
+            const qNum = index + 1;
+            const ctx = document.getElementById(`chartQ${qNum}`).getContext('2d');
+            
+            // Xóa chart cũ nếu có
+            if (charts[q]) charts[q].destroy();
+
+            charts[q] = new Chart(ctx, {
+                type: 'pie', 
+                data: {
+                    labels: ['Đã Báo Cáo', 'Chưa Báo Cáo'],
+                    datasets: [{
+                        data: [qStats[q].done, qStats[q].miss],
+                        backgroundColor: ['#27ae60', '#e74c3c'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        // Ẩn chú thích (legend) mặc định của Chart.js để tiết kiệm không gian, 
+                        // vì mình đã làm phần chú thích tùy chỉnh ở bên dưới biểu đồ
+                        legend: { display: false } 
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const dataIndex = elements[0].index; 
+                            if (dataIndex === 0) {
+                                showModal(`Đã Báo Cáo - Quý ${qNum}`, qStats[q].listDone);
+                            } else {
+                                showModal(`Chưa Báo Cáo - Quý ${qNum}`, qStats[q].listMiss);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    }
+
+    function searchTable() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById("reportTable");
+        const tr = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName("td")[1]; 
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+
+    function showModal(title, listData) {
+        const modalElement = document.getElementById('detailModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalList = document.getElementById('modalList');
+        
+        modalTitle.innerText = `Danh sách đơn vị ${title}`;
+        
+        modalElement.classList.remove('done-mode', 'miss-mode');
+        
+        // Kiểm tra xem tiêu đề có chứa chữ "Đã Báo Cáo" không để đổi màu Modal
+        if (title.includes('Đã Báo Cáo')) {
+            modalElement.classList.add('done-mode');
+        } else {
+            modalElement.classList.add('miss-mode');
+        }
+
+        modalList.innerHTML = '';
+        
+        if (listData.length === 0) {
+            modalList.innerHTML = '<li style="justify-content: center; color: #7f8c8d;">Chưa có dữ liệu cho phần này.</li>';
+        } else {
+            listData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="stt-badge">${index + 1}</span>
+                    <span class="item-text">${item}</span>
+                `;
+                modalList.appendChild(li);
+            });
+        }
+        
+        modalElement.style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('detailModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('detailModal');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
